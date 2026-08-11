@@ -6,13 +6,15 @@ import { projectImagesQuery, projectsQuery, sectorsQuery } from "@/lib/queries";
 import { formatINR } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-type Search = { sector?: string; status?: string };
+type Search = { sector?: string | undefined; status?: string | undefined };
 
 export const Route = createFileRoute("/projects/")({
-  validateSearch: (search: Record<string, unknown>): Search => ({
-    sector: typeof search.sector === "string" ? search.sector : undefined,
-    status: typeof search.status === "string" ? search.status : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): Search => {
+    const out: Search = {};
+    if (typeof search["sector"] === "string") out.sector = search["sector"];
+    if (typeof search["status"] === "string") out.status = search["status"];
+    return out;
+  },
   head: () => ({
     meta: [
       { title: "Project Portfolio — 32 Civil & Infrastructure Projects" },
