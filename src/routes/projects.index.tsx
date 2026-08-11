@@ -62,7 +62,7 @@ function ProjectsPage() {
   );
 
   const setFilter = (next: Search) =>
-    navigate({ search: (prev) => ({ ...prev, ...next }), replace: true });
+    navigate({ search: (prev: Search) => ({ ...prev, ...next }), replace: true });
 
   const coverFor = (id: string) =>
     images.find((i) => i.project_id === id && i.is_cover) ??
