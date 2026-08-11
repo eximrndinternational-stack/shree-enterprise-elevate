@@ -1,0 +1,29 @@
+DELETE FROM public.project_images;
+
+INSERT INTO public.project_images (project_id, url, alt_text, caption, gallery_category, is_cover, display_order)
+SELECT p.id, v.url, v.alt_text, v.caption, v.cat, v.cover, v.ord FROM (VALUES
+('hp-receiver-ammonia-tank-hccb','/__l5e/assets-v1/1721c3ab-0d15-468c-afac-ae9572755adb/hccb-hp-receiver-1.jpg','HP receiver ammonia tank structure at the Hindustan Coca-Cola Beverages plant, Raninagar','HP receiver (ammonia tank), HCCB Raninagar','Industrial',true,1),
+('hp-receiver-ammonia-tank-hccb','/__l5e/assets-v1/95ca28b3-b3f7-488a-a228-40dd313a9b2b/hccb-hp-receiver-2.jpg','Completed HP receiver ammonia tank foundation and support structure at HCCB Raninagar','HP receiver (ammonia tank), HCCB Raninagar','Industrial',false,2),
+('vanya-awas-apartments-lataguri','/__l5e/assets-v1/64b0f0a2-6391-4028-b885-0ac99c276fbc/lataguri-apartment-a-1.jpg','G+4 apartment block under construction at Vanya Awas, Lataguri','Apartment block, Vanya Awas, Lataguri','Residential',true,1),
+('vanya-awas-apartments-lataguri','/__l5e/assets-v1/746cdd78-334c-4af7-a811-23f222d431eb/lataguri-apartment-a-2.jpg','Apartment block facade at Vanya Awas, Lataguri','Apartment block, Vanya Awas, Lataguri','Residential',false,2),
+('vanya-awas-apartments-lataguri','/__l5e/assets-v1/ebf66416-4cc2-442c-bbdd-2c788e8d084a/lataguri-apartment-b-1.jpg','Second G+4 apartment block at Vanya Awas, Lataguri','Apartment block, Vanya Awas, Lataguri','Residential',false,3),
+('vanya-awas-apartments-lataguri','/__l5e/assets-v1/7307ab8e-28cd-4ac4-aaa9-83bdddc4e684/lataguri-apartment-b-2.jpg','Apartment block elevation at Vanya Awas, Lataguri','Apartment block, Vanya Awas, Lataguri','Residential',false,4),
+('vanya-awas-villas-lataguri','/__l5e/assets-v1/32eb2e19-793e-4139-91e3-ee1b02c1334f/lataguri-villa-a-1.jpg','G+1 duplex villa at Vanya Awas, Lataguri','Duplex villa, Vanya Awas, Lataguri','Residential',true,1),
+('vanya-awas-villas-lataguri','/__l5e/assets-v1/71036feb-aae3-46d6-953d-ab27eab353c2/lataguri-villa-a-2.jpg','Duplex villa exterior at Vanya Awas, Lataguri','Duplex villa, Vanya Awas, Lataguri','Residential',false,2),
+('vanya-awas-villas-lataguri','/__l5e/assets-v1/6530c8e9-2bb7-436d-9169-f9e1d2fb0d8d/lataguri-villa-b-1.jpg','Row of G+1 duplex villas at Vanya Awas, Lataguri','Duplex villas, Vanya Awas, Lataguri','Residential',false,3),
+('vanya-awas-villas-lataguri','/__l5e/assets-v1/49b4aa82-284c-4a30-b2bc-991edb0c7f4a/lataguri-villa-b-2.jpg','Completed duplex villa at Vanya Awas, Lataguri','Duplex villa, Vanya Awas, Lataguri','Residential',false,4),
+('vanya-awas-area-development-lataguri','/__l5e/assets-v1/ca7272c8-8ed0-47ba-9637-14c16fbc46a3/lataguri-drainage-road-1.jpg','Internal road and drainage works at Vanya Awas, Lataguri','Drainage and internal roads, Lataguri','Area Development',true,1),
+('vanya-awas-area-development-lataguri','/__l5e/assets-v1/317f2243-2403-41c8-a701-2845cfc9a50c/lataguri-drainage-road-2.jpg','Roadside drain construction at Vanya Awas, Lataguri','Drainage and internal roads, Lataguri','Area Development',false,2),
+('vanya-awas-area-development-lataguri','/__l5e/assets-v1/bd687846-540d-4302-b270-e420b010a1af/lataguri-landscaping-1.jpg','Landscaping works at Vanya Awas, Lataguri','Landscaping, Lataguri','Area Development',false,3),
+('vanya-awas-area-development-lataguri','/__l5e/assets-v1/823c2959-9f7b-41b1-bd7a-1eeb4f60dae6/lataguri-landscaping-2.jpg','Landscaped open space at Vanya Awas, Lataguri','Landscaping, Lataguri','Area Development',false,4),
+('vanya-awas-area-development-lataguri','/__l5e/assets-v1/e572d024-14db-48a4-98e8-832ad23d6068/lataguri-river-training-1.jpg','River training works alongside the Vanya Awas site, Lataguri','River training, Lataguri','Area Development',false,5),
+('vanya-awas-area-development-lataguri','/__l5e/assets-v1/c8c5fda2-a734-4921-992a-73221271d6c1/lataguri-river-training-2.jpg','Riverbank protection works at Lataguri','River training, Lataguri','Area Development',false,6),
+('phe-pipeline-ohr-grass-more','/__l5e/assets-v1/a4eafb6d-d311-4446-a0f1-785f394060ab/ohr-grass-more-1.jpg','Overhead reservoir constructed at Grass More Tea Garden, Jalpaiguri','Overhead reservoir, Grass More T.G.','Water Infrastructure',true,1),
+('phe-pipeline-ohr-grass-more','/__l5e/assets-v1/208d9fa3-04cc-4e53-85d9-80d5a8320c99/ohr-grass-more-2.jpg','Overhead reservoir structure and staging at Grass More Tea Garden','Overhead reservoir, Grass More T.G.','Water Infrastructure',false,2),
+('bituminous-road-belacoba','/__l5e/assets-v1/5b6f50a8-beea-4a13-974e-1e0068da985f/road-belacoba-1.jpg','Bituminous road completed at Belacoba Gram Panchayat, Jalpaiguri','Bituminous road, Belacoba GP','Roads',true,1),
+('bituminous-road-belacoba','/__l5e/assets-v1/50201e74-70e4-4cba-8ad1-a0668da3522e/road-belacoba-2.jpg','Surface finish of the bituminous road at Belacoba','Bituminous road, Belacoba GP','Roads',false,2),
+('bituminous-road-sakoajhora','/__l5e/assets-v1/e5f78a34-9ba4-4d23-99ab-b8d5d958c5cc/road-shakoajhora-1.jpg','Bituminous road constructed at Sakoajhora-I Gram Panchayat, Dhupguri','Bituminous road, Sakoajhora-I GP','Roads',true,1),
+('bituminous-road-sakoajhora','/__l5e/assets-v1/1d3a9694-4979-419b-aa28-420792446a4f/road-shakoajhora-2.jpg','Completed carriageway at Sakoajhora-I Gram Panchayat','Bituminous road, Sakoajhora-I GP','Roads',false,2),
+('paver-road-utshadhara-siliguri','/__l5e/assets-v1/10413ba6-199a-45e0-9776-9560e762f099/siliguri-utshadhara-road-1.jpg','Paver block road at Utshadhara, Noukaghat, Siliguri','Paver block road, Utshadhara Siliguri','Roads',true,1),
+('paver-road-utshadhara-siliguri','/__l5e/assets-v1/acd01789-8303-4648-9921-95a1f30c33e3/siliguri-utshadhara-road-2.jpg','Paver block road laid at the EWS area, Noukaghat, Siliguri','Paver block road, EWS Siliguri','Roads',false,2)
+) AS v(slug,url,alt_text,caption,cat,cover,ord) JOIN public.projects p ON p.slug = v.slug;
