@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as CapabilitiesRouteImport } from './routes/capabilities'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CredentialsRouteImport } from './routes/credentials'
 import { Route as EquipmentRouteImport } from './routes/equipment'
 import { Route as PeopleRouteImport } from './routes/people'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
@@ -30,6 +32,16 @@ const AboutRoute = AboutRouteImport.update({
 const CapabilitiesRoute = CapabilitiesRouteImport.update({
   id: '/capabilities',
   path: '/capabilities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CredentialsRoute = CredentialsRouteImport.update({
+  id: '/credentials',
+  path: '/credentials',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EquipmentRoute = EquipmentRouteImport.update({
@@ -57,6 +69,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/capabilities': typeof CapabilitiesRoute
+  '/contact': typeof ContactRoute
+  '/credentials': typeof CredentialsRoute
   '/equipment': typeof EquipmentRoute
   '/people': typeof PeopleRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -66,6 +80,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/capabilities': typeof CapabilitiesRoute
+  '/contact': typeof ContactRoute
+  '/credentials': typeof CredentialsRoute
   '/equipment': typeof EquipmentRoute
   '/people': typeof PeopleRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -76,6 +92,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/capabilities': typeof CapabilitiesRoute
+  '/contact': typeof ContactRoute
+  '/credentials': typeof CredentialsRoute
   '/equipment': typeof EquipmentRoute
   '/people': typeof PeopleRoute
   '/projects/$slug': typeof ProjectsSlugRoute
@@ -87,6 +105,8 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/capabilities'
+    | '/contact'
+    | '/credentials'
     | '/equipment'
     | '/people'
     | '/projects/$slug'
@@ -96,6 +116,8 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/capabilities'
+    | '/contact'
+    | '/credentials'
     | '/equipment'
     | '/people'
     | '/projects/$slug'
@@ -105,6 +127,8 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/capabilities'
+    | '/contact'
+    | '/credentials'
     | '/equipment'
     | '/people'
     | '/projects/$slug'
@@ -115,6 +139,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   CapabilitiesRoute: typeof CapabilitiesRoute
+  ContactRoute: typeof ContactRoute
+  CredentialsRoute: typeof CredentialsRoute
   EquipmentRoute: typeof EquipmentRoute
   PeopleRoute: typeof PeopleRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
@@ -142,6 +168,20 @@ declare module '@tanstack/react-router' {
       path: '/capabilities'
       fullPath: '/capabilities'
       preLoaderRoute: typeof CapabilitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/credentials': {
+      id: '/credentials'
+      path: '/credentials'
+      fullPath: '/credentials'
+      preLoaderRoute: typeof CredentialsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/equipment': {
@@ -179,6 +219,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   CapabilitiesRoute: CapabilitiesRoute,
+  ContactRoute: ContactRoute,
+  CredentialsRoute: CredentialsRoute,
   EquipmentRoute: EquipmentRoute,
   PeopleRoute: PeopleRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
