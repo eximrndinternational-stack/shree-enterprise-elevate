@@ -2,9 +2,34 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowRight, Building2, HardHat, Truck, Waves } from "lucide-react";
 import { Section, SectionHeading } from "@/components/site/Section";
+import { Reveal } from "@/components/site/Reveal";
+import { useCountUp } from "@/hooks/use-count-up";
 import { projectsQuery, projectImagesQuery, sectorsQuery, clientsQuery } from "@/lib/queries";
 import { SITE, formatINR } from "@/lib/site";
 import heroImage from "@/assets/hero-site.jpg.asset.json";
+
+function StatCell({
+  value,
+  format,
+  label,
+}: {
+  value: number;
+  format: (n: number) => string;
+  label: string;
+}) {
+  const { ref, n } = useCountUp(value);
+  return (
+    <div
+      ref={ref as React.RefObject<HTMLDivElement>}
+      className="group bg-card px-5 py-10 transition-colors hover:bg-secondary/50 lg:px-8"
+    >
+      <p className="font-display text-3xl font-extrabold tabular-nums lg:text-4xl">{format(n)}</p>
+      <span className="mt-3 block h-px w-8 bg-signal transition-all duration-500 group-hover:w-16" aria-hidden />
+      <p className="mt-3 text-xs uppercase tracking-wider text-muted-foreground">{label}</p>
+    </div>
+  );
+}
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
