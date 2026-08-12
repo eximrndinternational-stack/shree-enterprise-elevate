@@ -73,71 +73,126 @@ function Home() {
     images.find((i) => i.project_id === projectId);
 
   const stats = [
-    { value: `${new Date().getFullYear() - SITE.since}+`, label: "Years in operation" },
-    { value: `${projects.length}`, label: "Documented projects" },
-    { value: formatINR(totalValue), label: "Contract value executed" },
-    { value: "26", label: "Machinery item types owned" },
+    {
+      value: new Date().getFullYear() - SITE.since,
+      format: (n: number) => `${Math.round(n)}+`,
+      label: "Years in operation",
+    },
+    { value: projects.length, format: (n: number) => `${Math.round(n)}`, label: "Documented projects" },
+    { value: totalValue, format: (n: number) => formatINR(n), label: "Contract value executed" },
+    { value: 26, format: (n: number) => `${Math.round(n)}`, label: "Machinery item types owned" },
   ];
+
+  const marqueeClients = clients.length ? [...clients, ...clients] : [];
 
   return (
     <>
       {/* Hero */}
-      <section className="relative flex min-h-[92svh] items-end overflow-hidden bg-charcoal text-charcoal-foreground">
+      <section className="grain relative flex min-h-[92svh] items-end overflow-hidden bg-charcoal text-charcoal-foreground">
         <img
           src={heroImage.url}
           alt="Reinforced concrete frame of a multi-storey building under construction at dusk"
-          className="absolute inset-0 h-full w-full object-cover opacity-45"
+          className="absolute inset-0 h-full w-full scale-105 object-cover opacity-45"
           fetchPriority="high"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/70 to-charcoal/30"
+          className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/75 to-charcoal/20"
           aria-hidden
         />
+        <div className="blueprint absolute inset-0 opacity-60" aria-hidden />
+        <div
+          className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-charcoal to-transparent"
+          aria-hidden
+        />
+
         <div className="relative mx-auto w-full max-w-7xl px-5 pb-16 pt-32 lg:px-8 lg:pb-24">
-          <p className="eyebrow text-charcoal-foreground/70">
-            <span className="text-signal">Jalpaiguri, West Bengal</span> · Since {SITE.since}
-          </p>
-          <h1 className="mt-6 max-w-5xl text-[2.6rem] font-extrabold leading-[1.02] sm:text-6xl lg:text-7xl">
-            Civil and infrastructure works, delivered to programme across North Bengal.
-          </h1>
-          <p className="mt-7 max-w-2xl text-base leading-relaxed text-charcoal-foreground/75 lg:text-lg">
-            Apartments and villas, hospitals, bituminous and CC roads, drainage, water supply
-            infrastructure, industrial civil works and bulk material supply — for Ambuja Neotia,
-            Shapoorji Pallonji, Hindustan Coca-Cola Beverages, Manipal Hospital and West Bengal
-            government departments.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <Link
-              to="/projects"
-              className="inline-flex h-12 items-center gap-2 bg-signal px-6 text-sm font-semibold text-signal-foreground transition-opacity hover:opacity-90"
-            >
-              View the portfolio <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              to="/contact"
-              className="inline-flex h-12 items-center border border-charcoal-foreground/30 px-6 text-sm font-semibold transition-colors hover:bg-charcoal-foreground/10"
-            >
-              Start an enquiry
-            </Link>
-          </div>
+          <Reveal>
+            <p className="eyebrow flex flex-wrap items-center gap-3 text-charcoal-foreground/70">
+              <span className="inline-flex items-center gap-2 border border-signal/40 bg-signal/10 px-2.5 py-1 text-signal">
+                <span className="h-1.5 w-1.5 animate-pulse bg-signal" aria-hidden />
+                Jalpaiguri, West Bengal
+              </span>
+              <span>Since {SITE.since}</span>
+            </p>
+          </Reveal>
+          <Reveal delay={80}>
+            <h1 className="mt-6 max-w-5xl text-balance text-[2.6rem] font-extrabold leading-[1.02] sm:text-6xl lg:text-7xl">
+              Civil and infrastructure works,{" "}
+              <span className="relative inline-block">
+                <span className="relative z-10">delivered to programme</span>
+                <span
+                  className="absolute inset-x-0 bottom-1 z-0 h-3 bg-signal/35 lg:bottom-2 lg:h-4"
+                  aria-hidden
+                />
+              </span>{" "}
+              across North Bengal.
+            </h1>
+          </Reveal>
+          <Reveal delay={160}>
+            <p className="mt-7 max-w-2xl border-l-2 border-signal/60 pl-5 text-base leading-relaxed text-charcoal-foreground/75 lg:text-lg">
+              Apartments and villas, hospitals, bituminous and CC roads, drainage, water supply
+              infrastructure, industrial civil works and bulk material supply — for Ambuja Neotia,
+              Shapoorji Pallonji, Hindustan Coca-Cola Beverages, Manipal Hospital and West Bengal
+              government departments.
+            </p>
+          </Reveal>
+          <Reveal delay={240}>
+            <div className="mt-10 flex flex-wrap items-center gap-3">
+              <Link
+                to="/projects"
+                className="group inline-flex h-12 items-center gap-2 bg-signal px-6 text-sm font-semibold text-signal-foreground transition-all hover:gap-3 hover:brightness-110"
+              >
+                View the portfolio
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-flex h-12 items-center border border-charcoal-foreground/30 px-6 text-sm font-semibold backdrop-blur-sm transition-colors hover:border-charcoal-foreground/60 hover:bg-charcoal-foreground/10"
+              >
+                Start an enquiry
+              </Link>
+              <span className="ml-1 hidden h-8 w-px bg-charcoal-foreground/20 sm:block" aria-hidden />
+              <span className="hidden font-mono text-[11px] uppercase tracking-[0.18em] text-charcoal-foreground/50 sm:inline">
+                {projects.length} projects on record
+              </span>
+            </div>
+          </Reveal>
+        </div>
+
+        <div
+          className="absolute bottom-8 right-5 hidden h-16 w-px overflow-hidden bg-charcoal-foreground/15 lg:right-8 lg:block"
+          aria-hidden
+        >
+          <span className="scroll-cue block h-full w-full bg-signal" />
         </div>
       </section>
+
+      {/* Client marquee */}
+      {marqueeClients.length > 0 && (
+        <div className="overflow-hidden border-b border-border bg-charcoal py-4 text-charcoal-foreground">
+          <div className="marquee-track flex w-max items-center gap-10 whitespace-nowrap">
+            {marqueeClients.map((c, i) => (
+              <span
+                key={`${c.id}-${i}`}
+                className="flex items-center gap-10 font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal-foreground/55"
+              >
+                {c.name}
+                <span className="h-1 w-1 bg-signal/70" aria-hidden />
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Proof band */}
       <div className="border-b border-border bg-card">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-border px-0 lg:grid-cols-4">
           {stats.map((s) => (
-            <div key={s.label} className="bg-card px-5 py-10 lg:px-8">
-              <p className="font-display text-3xl font-extrabold tabular-nums lg:text-4xl">
-                {s.value}
-              </p>
-              <p className="mt-2 text-xs uppercase tracking-wider text-muted-foreground">
-                {s.label}
-              </p>
-            </div>
+            <StatCell key={s.label} value={s.value} format={s.format} label={s.label} />
           ))}
         </div>
       </div>
+
 
       {/* About preview */}
       <Section>
