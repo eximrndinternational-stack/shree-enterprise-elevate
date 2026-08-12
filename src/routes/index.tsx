@@ -264,12 +264,19 @@ function Home() {
                 title: "Bulk supply capability",
                 body: "Sand, aggregate, bricks, GSB, rubble and Pakur chips supplied at project scale.",
               },
-            ].map((f) => (
-              <li key={f.title} className="bg-card p-6">
-                <f.icon className="h-5 w-5 text-signal" aria-hidden />
+            ].map((f, i) => (
+              <Reveal
+                as="li"
+                key={f.title}
+                delay={i * 70}
+                className="group bg-card p-6 transition-colors hover:bg-secondary/60"
+              >
+                <span className="inline-flex h-10 w-10 items-center justify-center border border-signal/30 bg-signal/10 text-signal transition-colors group-hover:bg-signal group-hover:text-signal-foreground">
+                  <f.icon className="h-5 w-5" aria-hidden />
+                </span>
                 <p className="mt-4 font-display font-bold">{f.title}</p>
                 <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
-              </li>
+              </Reveal>
             ))}
           </ul>
         </div>
