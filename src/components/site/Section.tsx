@@ -58,21 +58,27 @@ export function PageHero({
   lead?: string;
 }) {
   return (
-    <div className="border-b border-border bg-charcoal text-charcoal-foreground">
-      <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
+    <div className="grain relative overflow-hidden border-b border-border bg-charcoal text-charcoal-foreground">
+      <div className="blueprint absolute inset-0 opacity-60" aria-hidden />
+      <div
+        className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-signal/10 blur-3xl"
+        aria-hidden
+      />
+      <div className="relative mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
         <p className="eyebrow flex items-center gap-3 text-charcoal-foreground/60">
           {index && <span className="text-signal">{index}</span>}
           {eyebrow}
         </p>
-        <h1 className="mt-5 max-w-4xl text-4xl font-extrabold leading-[1.05] sm:text-5xl lg:text-6xl">
+        <h1 className="mt-5 max-w-4xl text-balance text-4xl font-extrabold leading-[1.05] sm:text-5xl lg:text-6xl">
           {title}
         </h1>
         {lead && (
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-charcoal-foreground/70 lg:text-lg">
+          <p className="mt-6 max-w-2xl border-l-2 border-signal/50 pl-5 text-base leading-relaxed text-charcoal-foreground/70 lg:text-lg">
             {lead}
           </p>
         )}
       </div>
     </div>
+
   );
 }
