@@ -349,24 +349,31 @@ function Home() {
         </div>
 
         <ul className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {featured.map((p) => {
+          {featured.map((p, i) => {
             const cover = coverFor(p.id);
             return (
-              <li key={p.id} className="group">
+              <Reveal as="li" key={p.id} delay={(i % 3) * 90} className="group">
                 <Link to="/projects/$slug" params={{ slug: p.slug }} className="block">
-                  <div className="aspect-[4/3] overflow-hidden bg-concrete">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-concrete">
                     {cover ? (
                       <img
                         src={cover.url}
                         alt={cover.alt_text}
                         loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                        className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
                       />
                     ) : (
                       <div className="grid h-full w-full place-items-center grid-lines">
                         <span className="eyebrow">{p.work_type}</span>
                       </div>
                     )}
+                    <div
+                      className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-charcoal/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                      aria-hidden
+                    />
+                    <span className="absolute bottom-3 left-3 inline-flex translate-y-2 items-center gap-2 bg-signal px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-signal-foreground opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                      View case study <ArrowRight className="h-3 w-3" />
+                    </span>
                   </div>
                   <div className="mt-4 flex items-center gap-3">
                     <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-signal">
@@ -377,63 +384,77 @@ function Home() {
                       {formatINR(p.project_value)}
                     </span>
                   </div>
-                  <h3 className="mt-2 text-lg font-bold leading-snug group-hover:underline">
-                    {p.name}
+                  <h3 className="mt-2 text-lg font-bold leading-snug">
+                    <span className="link-underline">{p.name}</span>
                   </h3>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {p.client_name} · {p.location}
                   </p>
                 </Link>
-              </li>
+              </Reveal>
             );
           })}
         </ul>
       </Section>
 
       {/* Clients */}
-      <div className="border-y border-border bg-charcoal text-charcoal-foreground">
-        <Section>
+      <div className="relative overflow-hidden border-y border-border bg-charcoal text-charcoal-foreground">
+        <div className="blueprint absolute inset-0 opacity-50" aria-hidden />
+        <Section className="relative">
           <p className="eyebrow text-charcoal-foreground/60">
-            <span className="text-signal">04</span> Clients & principals
+            <span className="text-signal">04</span> Clients &amp; principals
           </p>
           <h2 className="mt-4 max-w-3xl text-3xl font-extrabold sm:text-4xl">
             Retained by developers, corporates and state departments.
           </h2>
           <ul className="mt-12 grid gap-px bg-charcoal-foreground/10 sm:grid-cols-2 lg:grid-cols-3">
-            {clients.map((c) => (
-              <li key={c.id} className="bg-charcoal p-6">
+            {clients.map((c, i) => (
+              <Reveal
+                as="li"
+                key={c.id}
+                delay={(i % 3) * 60}
+                className="group bg-charcoal p-6 transition-colors hover:bg-charcoal-foreground/[0.06]"
+              >
                 <p className="font-display text-base font-bold">{c.name}</p>
                 {c.relationship && (
                   <p className="mt-1.5 text-sm text-charcoal-foreground/60">{c.relationship}</p>
                 )}
-              </li>
+                <span
+                  className="mt-4 block h-px w-6 bg-signal/70 transition-all duration-500 group-hover:w-14"
+                  aria-hidden
+                />
+              </Reveal>
             ))}
           </ul>
         </Section>
       </div>
 
       {/* CTA */}
-      <Section className="text-center">
-        <p className="eyebrow">Next step</p>
-        <h2 className="mx-auto mt-4 max-w-3xl text-3xl font-extrabold sm:text-4xl lg:text-5xl">
-          Send us the drawings, site location and programme. We will respond with a considered
-          quote.
-        </h2>
-        <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <Link
-            to="/contact"
-            className="inline-flex h-12 items-center gap-2 bg-charcoal px-6 text-sm font-semibold text-charcoal-foreground hover:bg-charcoal/90"
-          >
-            Start an enquiry <ArrowRight className="h-4 w-4" />
-          </Link>
-          <a
-            href={`tel:${SITE.phonePrimary}`}
-            className="inline-flex h-12 items-center border border-border px-6 text-sm font-semibold hover:bg-secondary"
-          >
-            Call {SITE.phonePrimary}
-          </a>
+      <Section className="relative text-center">
+        <div className="mx-auto max-w-3xl">
+          <p className="eyebrow">Next step</p>
+          <h2 className="mt-4 text-balance text-3xl font-extrabold sm:text-4xl lg:text-5xl">
+            Send us the drawings, site location and programme. We will respond with a considered
+            quote.
+          </h2>
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <Link
+              to="/contact"
+              className="group inline-flex h-12 items-center gap-2 bg-charcoal px-6 text-sm font-semibold text-charcoal-foreground transition-all hover:gap-3 hover:bg-charcoal/90"
+            >
+              Start an enquiry
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+            <a
+              href={`tel:${SITE.phonePrimary}`}
+              className="inline-flex h-12 items-center border border-border px-6 text-sm font-semibold transition-colors hover:border-foreground/40 hover:bg-secondary"
+            >
+              Call {SITE.phonePrimary}
+            </a>
+          </div>
         </div>
       </Section>
+
     </>
   );
 }
