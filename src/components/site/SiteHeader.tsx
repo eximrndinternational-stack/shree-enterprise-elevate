@@ -15,13 +15,33 @@ const NAV = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-5 lg:h-20 lg:px-8">
+    <header
+      className={cn(
+        "sticky top-0 z-50 border-b transition-all duration-300",
+        scrolled
+          ? "border-border/70 bg-background/85 shadow-[0_1px_0_0_var(--color-border)] backdrop-blur-md"
+          : "border-transparent bg-background/60 backdrop-blur-sm",
+      )}
+    >
+      <div
+        className={cn(
+          "mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 transition-all duration-300 lg:px-8",
+          scrolled ? "h-14 lg:h-16" : "h-16 lg:h-20",
+        )}
+      >
         <Link to="/" className="group flex items-baseline gap-2" onClick={() => setOpen(false)}>
           <span className="font-display text-lg font-extrabold uppercase tracking-tight lg:text-xl">
-            Shree Enterprise
+            Shree<span className="text-signal">.</span> Enterprise
           </span>
           <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:inline">
             Est. {SITE.since}
@@ -33,19 +53,24 @@ export function SiteHeader() {
             <Link
               key={item.to}
               to={item.to}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="group relative py-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               activeProps={{ className: "text-foreground" }}
             >
               {item.label}
+              <span
+                className="absolute -bottom-0.5 left-0 h-px w-0 bg-signal transition-all duration-300 group-hover:w-full"
+                aria-hidden
+              />
             </Link>
           ))}
           <Link
             to="/contact"
-            className="inline-flex h-10 items-center bg-charcoal px-5 text-sm font-semibold text-charcoal-foreground transition-colors hover:bg-charcoal/90"
+            className="group inline-flex h-10 items-center gap-2 bg-charcoal px-5 text-sm font-semibold text-charcoal-foreground transition-all hover:gap-3 hover:bg-signal hover:text-signal-foreground"
           >
             Request a quote
           </Link>
         </nav>
+
 
         <button
           type="button"

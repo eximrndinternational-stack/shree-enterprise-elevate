@@ -2,9 +2,34 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowRight, Building2, HardHat, Truck, Waves } from "lucide-react";
 import { Section, SectionHeading } from "@/components/site/Section";
+import { Reveal } from "@/components/site/Reveal";
+import { useCountUp } from "@/hooks/use-count-up";
 import { projectsQuery, projectImagesQuery, sectorsQuery, clientsQuery } from "@/lib/queries";
 import { SITE, formatINR } from "@/lib/site";
 import heroImage from "@/assets/hero-site.jpg.asset.json";
+
+function StatCell({
+  value,
+  format,
+  label,
+}: {
+  value: number;
+  format: (n: number) => string;
+  label: string;
+}) {
+  const { ref, n } = useCountUp(value);
+  return (
+    <div
+      ref={ref as React.RefObject<HTMLDivElement>}
+      className="group bg-card px-5 py-10 transition-colors hover:bg-secondary/50 lg:px-8"
+    >
+      <p className="font-display text-3xl font-extrabold tabular-nums lg:text-4xl">{format(n)}</p>
+      <span className="mt-3 block h-px w-8 bg-signal transition-all duration-500 group-hover:w-16" aria-hidden />
+      <p className="mt-3 text-xs uppercase tracking-wider text-muted-foreground">{label}</p>
+    </div>
+  );
+}
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -73,71 +98,126 @@ function Home() {
     images.find((i) => i.project_id === projectId);
 
   const stats = [
-    { value: `${new Date().getFullYear() - SITE.since}+`, label: "Years in operation" },
-    { value: `${projects.length}`, label: "Documented projects" },
-    { value: formatINR(totalValue), label: "Contract value executed" },
-    { value: "26", label: "Machinery item types owned" },
+    {
+      value: new Date().getFullYear() - SITE.since,
+      format: (n: number) => `${Math.round(n)}+`,
+      label: "Years in operation",
+    },
+    { value: projects.length, format: (n: number) => `${Math.round(n)}`, label: "Documented projects" },
+    { value: totalValue, format: (n: number) => formatINR(n), label: "Contract value executed" },
+    { value: 26, format: (n: number) => `${Math.round(n)}`, label: "Machinery item types owned" },
   ];
+
+  const marqueeClients = clients.length ? [...clients, ...clients] : [];
 
   return (
     <>
       {/* Hero */}
-      <section className="relative flex min-h-[92svh] items-end overflow-hidden bg-charcoal text-charcoal-foreground">
+      <section className="grain relative flex min-h-[92svh] items-end overflow-hidden bg-charcoal text-charcoal-foreground">
         <img
           src={heroImage.url}
           alt="Reinforced concrete frame of a multi-storey building under construction at dusk"
-          className="absolute inset-0 h-full w-full object-cover opacity-45"
+          className="absolute inset-0 h-full w-full scale-105 object-cover opacity-45"
           fetchPriority="high"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/70 to-charcoal/30"
+          className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/75 to-charcoal/20"
           aria-hidden
         />
+        <div className="blueprint absolute inset-0 opacity-60" aria-hidden />
+        <div
+          className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-charcoal to-transparent"
+          aria-hidden
+        />
+
         <div className="relative mx-auto w-full max-w-7xl px-5 pb-16 pt-32 lg:px-8 lg:pb-24">
-          <p className="eyebrow text-charcoal-foreground/70">
-            <span className="text-signal">Jalpaiguri, West Bengal</span> · Since {SITE.since}
-          </p>
-          <h1 className="mt-6 max-w-5xl text-[2.6rem] font-extrabold leading-[1.02] sm:text-6xl lg:text-7xl">
-            Civil and infrastructure works, delivered to programme across North Bengal.
-          </h1>
-          <p className="mt-7 max-w-2xl text-base leading-relaxed text-charcoal-foreground/75 lg:text-lg">
-            Apartments and villas, hospitals, bituminous and CC roads, drainage, water supply
-            infrastructure, industrial civil works and bulk material supply — for Ambuja Neotia,
-            Shapoorji Pallonji, Hindustan Coca-Cola Beverages, Manipal Hospital and West Bengal
-            government departments.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <Link
-              to="/projects"
-              className="inline-flex h-12 items-center gap-2 bg-signal px-6 text-sm font-semibold text-signal-foreground transition-opacity hover:opacity-90"
-            >
-              View the portfolio <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              to="/contact"
-              className="inline-flex h-12 items-center border border-charcoal-foreground/30 px-6 text-sm font-semibold transition-colors hover:bg-charcoal-foreground/10"
-            >
-              Start an enquiry
-            </Link>
-          </div>
+          <Reveal>
+            <p className="eyebrow flex flex-wrap items-center gap-3 text-charcoal-foreground/70">
+              <span className="inline-flex items-center gap-2 border border-signal/40 bg-signal/10 px-2.5 py-1 text-signal">
+                <span className="h-1.5 w-1.5 animate-pulse bg-signal" aria-hidden />
+                Jalpaiguri, West Bengal
+              </span>
+              <span>Since {SITE.since}</span>
+            </p>
+          </Reveal>
+          <Reveal delay={80}>
+            <h1 className="mt-6 max-w-5xl text-balance text-[2.6rem] font-extrabold leading-[1.02] sm:text-6xl lg:text-7xl">
+              Civil and infrastructure works,{" "}
+              <span className="relative inline-block">
+                <span className="relative z-10">delivered to programme</span>
+                <span
+                  className="absolute inset-x-0 bottom-1 z-0 h-3 bg-signal/35 lg:bottom-2 lg:h-4"
+                  aria-hidden
+                />
+              </span>{" "}
+              across North Bengal.
+            </h1>
+          </Reveal>
+          <Reveal delay={160}>
+            <p className="mt-7 max-w-2xl border-l-2 border-signal/60 pl-5 text-base leading-relaxed text-charcoal-foreground/75 lg:text-lg">
+              Apartments and villas, hospitals, bituminous and CC roads, drainage, water supply
+              infrastructure, industrial civil works and bulk material supply — for Ambuja Neotia,
+              Shapoorji Pallonji, Hindustan Coca-Cola Beverages, Manipal Hospital and West Bengal
+              government departments.
+            </p>
+          </Reveal>
+          <Reveal delay={240}>
+            <div className="mt-10 flex flex-wrap items-center gap-3">
+              <Link
+                to="/projects"
+                className="group inline-flex h-12 items-center gap-2 bg-signal px-6 text-sm font-semibold text-signal-foreground transition-all hover:gap-3 hover:brightness-110"
+              >
+                View the portfolio
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-flex h-12 items-center border border-charcoal-foreground/30 px-6 text-sm font-semibold backdrop-blur-sm transition-colors hover:border-charcoal-foreground/60 hover:bg-charcoal-foreground/10"
+              >
+                Start an enquiry
+              </Link>
+              <span className="ml-1 hidden h-8 w-px bg-charcoal-foreground/20 sm:block" aria-hidden />
+              <span className="hidden font-mono text-[11px] uppercase tracking-[0.18em] text-charcoal-foreground/50 sm:inline">
+                {projects.length} projects on record
+              </span>
+            </div>
+          </Reveal>
+        </div>
+
+        <div
+          className="absolute bottom-8 right-5 hidden h-16 w-px overflow-hidden bg-charcoal-foreground/15 lg:right-8 lg:block"
+          aria-hidden
+        >
+          <span className="scroll-cue block h-full w-full bg-signal" />
         </div>
       </section>
+
+      {/* Client marquee */}
+      {marqueeClients.length > 0 && (
+        <div className="overflow-hidden border-b border-border bg-charcoal py-4 text-charcoal-foreground">
+          <div className="marquee-track flex w-max items-center gap-10 whitespace-nowrap">
+            {marqueeClients.map((c, i) => (
+              <span
+                key={`${c.id}-${i}`}
+                className="flex items-center gap-10 font-mono text-[11px] uppercase tracking-[0.22em] text-charcoal-foreground/55"
+              >
+                {c.name}
+                <span className="h-1 w-1 bg-signal/70" aria-hidden />
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Proof band */}
       <div className="border-b border-border bg-card">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-border px-0 lg:grid-cols-4">
           {stats.map((s) => (
-            <div key={s.label} className="bg-card px-5 py-10 lg:px-8">
-              <p className="font-display text-3xl font-extrabold tabular-nums lg:text-4xl">
-                {s.value}
-              </p>
-              <p className="mt-2 text-xs uppercase tracking-wider text-muted-foreground">
-                {s.label}
-              </p>
-            </div>
+            <StatCell key={s.label} value={s.value} format={s.format} label={s.label} />
           ))}
         </div>
       </div>
+
 
       {/* About preview */}
       <Section>
@@ -184,12 +264,19 @@ function Home() {
                 title: "Bulk supply capability",
                 body: "Sand, aggregate, bricks, GSB, rubble and Pakur chips supplied at project scale.",
               },
-            ].map((f) => (
-              <li key={f.title} className="bg-card p-6">
-                <f.icon className="h-5 w-5 text-signal" aria-hidden />
+            ].map((f, i) => (
+              <Reveal
+                as="li"
+                key={f.title}
+                delay={i * 70}
+                className="group bg-card p-6 transition-colors hover:bg-secondary/60"
+              >
+                <span className="inline-flex h-10 w-10 items-center justify-center border border-signal/30 bg-signal/10 text-signal transition-colors group-hover:bg-signal group-hover:text-signal-foreground">
+                  <f.icon className="h-5 w-5" aria-hidden />
+                </span>
                 <p className="mt-4 font-display font-bold">{f.title}</p>
                 <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
-              </li>
+              </Reveal>
             ))}
           </ul>
         </div>
@@ -208,7 +295,16 @@ function Home() {
             {sectors.map((s, i) => {
               const count = projects.filter((p) => p.sector_slug === s.slug).length;
               return (
-                <li key={s.id} className="bg-background p-7">
+                <Reveal
+                  as="li"
+                  key={s.id}
+                  delay={(i % 3) * 70}
+                  className="group relative bg-background p-7 transition-colors hover:bg-card"
+                >
+                  <span
+                    className="absolute inset-x-0 top-0 h-0.5 w-0 bg-signal transition-all duration-500 group-hover:w-full"
+                    aria-hidden
+                  />
                   <div className="flex items-start justify-between gap-4">
                     <span className="font-mono text-[11px] tracking-[0.2em] text-signal">
                       {String(i + 1).padStart(2, "0")}
@@ -221,8 +317,9 @@ function Home() {
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                     {s.headline}
                   </p>
-                </li>
+                </Reveal>
               );
+
             })}
           </ul>
           <Link
@@ -252,24 +349,31 @@ function Home() {
         </div>
 
         <ul className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {featured.map((p) => {
+          {featured.map((p, i) => {
             const cover = coverFor(p.id);
             return (
-              <li key={p.id} className="group">
+              <Reveal as="li" key={p.id} delay={(i % 3) * 90} className="group">
                 <Link to="/projects/$slug" params={{ slug: p.slug }} className="block">
-                  <div className="aspect-[4/3] overflow-hidden bg-concrete">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-concrete">
                     {cover ? (
                       <img
                         src={cover.url}
                         alt={cover.alt_text}
                         loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                        className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
                       />
                     ) : (
                       <div className="grid h-full w-full place-items-center grid-lines">
                         <span className="eyebrow">{p.work_type}</span>
                       </div>
                     )}
+                    <div
+                      className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-charcoal/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                      aria-hidden
+                    />
+                    <span className="absolute bottom-3 left-3 inline-flex translate-y-2 items-center gap-2 bg-signal px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-signal-foreground opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                      View case study <ArrowRight className="h-3 w-3" />
+                    </span>
                   </div>
                   <div className="mt-4 flex items-center gap-3">
                     <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-signal">
@@ -280,63 +384,77 @@ function Home() {
                       {formatINR(p.project_value)}
                     </span>
                   </div>
-                  <h3 className="mt-2 text-lg font-bold leading-snug group-hover:underline">
-                    {p.name}
+                  <h3 className="mt-2 text-lg font-bold leading-snug">
+                    <span className="link-underline">{p.name}</span>
                   </h3>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {p.client_name} · {p.location}
                   </p>
                 </Link>
-              </li>
+              </Reveal>
             );
           })}
         </ul>
       </Section>
 
       {/* Clients */}
-      <div className="border-y border-border bg-charcoal text-charcoal-foreground">
-        <Section>
+      <div className="relative overflow-hidden border-y border-border bg-charcoal text-charcoal-foreground">
+        <div className="blueprint absolute inset-0 opacity-50" aria-hidden />
+        <Section className="relative">
           <p className="eyebrow text-charcoal-foreground/60">
-            <span className="text-signal">04</span> Clients & principals
+            <span className="text-signal">04</span> Clients &amp; principals
           </p>
           <h2 className="mt-4 max-w-3xl text-3xl font-extrabold sm:text-4xl">
             Retained by developers, corporates and state departments.
           </h2>
           <ul className="mt-12 grid gap-px bg-charcoal-foreground/10 sm:grid-cols-2 lg:grid-cols-3">
-            {clients.map((c) => (
-              <li key={c.id} className="bg-charcoal p-6">
+            {clients.map((c, i) => (
+              <Reveal
+                as="li"
+                key={c.id}
+                delay={(i % 3) * 60}
+                className="group bg-charcoal p-6 transition-colors hover:bg-charcoal-foreground/[0.06]"
+              >
                 <p className="font-display text-base font-bold">{c.name}</p>
                 {c.relationship && (
                   <p className="mt-1.5 text-sm text-charcoal-foreground/60">{c.relationship}</p>
                 )}
-              </li>
+                <span
+                  className="mt-4 block h-px w-6 bg-signal/70 transition-all duration-500 group-hover:w-14"
+                  aria-hidden
+                />
+              </Reveal>
             ))}
           </ul>
         </Section>
       </div>
 
       {/* CTA */}
-      <Section className="text-center">
-        <p className="eyebrow">Next step</p>
-        <h2 className="mx-auto mt-4 max-w-3xl text-3xl font-extrabold sm:text-4xl lg:text-5xl">
-          Send us the drawings, site location and programme. We will respond with a considered
-          quote.
-        </h2>
-        <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <Link
-            to="/contact"
-            className="inline-flex h-12 items-center gap-2 bg-charcoal px-6 text-sm font-semibold text-charcoal-foreground hover:bg-charcoal/90"
-          >
-            Start an enquiry <ArrowRight className="h-4 w-4" />
-          </Link>
-          <a
-            href={`tel:${SITE.phonePrimary}`}
-            className="inline-flex h-12 items-center border border-border px-6 text-sm font-semibold hover:bg-secondary"
-          >
-            Call {SITE.phonePrimary}
-          </a>
+      <Section className="relative text-center">
+        <div className="mx-auto max-w-3xl">
+          <p className="eyebrow">Next step</p>
+          <h2 className="mt-4 text-balance text-3xl font-extrabold sm:text-4xl lg:text-5xl">
+            Send us the drawings, site location and programme. We will respond with a considered
+            quote.
+          </h2>
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <Link
+              to="/contact"
+              className="group inline-flex h-12 items-center gap-2 bg-charcoal px-6 text-sm font-semibold text-charcoal-foreground transition-all hover:gap-3 hover:bg-charcoal/90"
+            >
+              Start an enquiry
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+            <a
+              href={`tel:${SITE.phonePrimary}`}
+              className="inline-flex h-12 items-center border border-border px-6 text-sm font-semibold transition-colors hover:border-foreground/40 hover:bg-secondary"
+            >
+              Call {SITE.phonePrimary}
+            </a>
+          </div>
         </div>
       </Section>
+
     </>
   );
 }
