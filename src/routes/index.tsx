@@ -295,7 +295,16 @@ function Home() {
             {sectors.map((s, i) => {
               const count = projects.filter((p) => p.sector_slug === s.slug).length;
               return (
-                <li key={s.id} className="bg-background p-7">
+                <Reveal
+                  as="li"
+                  key={s.id}
+                  delay={(i % 3) * 70}
+                  className="group relative bg-background p-7 transition-colors hover:bg-card"
+                >
+                  <span
+                    className="absolute inset-x-0 top-0 h-0.5 w-0 bg-signal transition-all duration-500 group-hover:w-full"
+                    aria-hidden
+                  />
                   <div className="flex items-start justify-between gap-4">
                     <span className="font-mono text-[11px] tracking-[0.2em] text-signal">
                       {String(i + 1).padStart(2, "0")}
@@ -308,8 +317,9 @@ function Home() {
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                     {s.headline}
                   </p>
-                </li>
+                </Reveal>
               );
+
             })}
           </ul>
           <Link
