@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Menu, X, Phone } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
